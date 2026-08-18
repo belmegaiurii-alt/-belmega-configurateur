@@ -586,13 +586,9 @@ let drawers = [];
    INITIAL DRAWERS
 ========================= */
 
-ffunction createDrawers(){
+function createDrawers(){
 
-  const sections = Number($("sections").value);
-
-  // Максимум одна шухляда на одну секцію
-  const requested = Number($("outerDrawers").value);
-  const count = Math.min(requested, sections);
+  const count = Number($("outerDrawers").value);
 
   drawers = [];
 
@@ -601,10 +597,10 @@ ffunction createDrawers(){
     drawers.push({
       id: i + 1,
 
-      // Одна шухляда = одна секція
-      section: i + 1,
+      // Шухляди знаходяться в одній секції
+      section: 1,
 
-      // Не ділити секцію на ліву/праву частину
+      // Повна ширина секції
       side: "full",
 
       height: 150,
@@ -612,13 +608,9 @@ ffunction createDrawers(){
     });
   }
 
-  // Синхронізуємо кількість шухляд з кількістю секцій
-  $("outerDrawers").value = count;
-
   renderDrawerControls();
+  update();
 }
-
-
 /* =========================
    DRAWER CONTROLS
 ========================= */
