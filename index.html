@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configurateur meuble - BELMEGA</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f4f7f8;
+  color:#263238;
+}
+
+header{
+  background:#19aeb8;
+  color:white;
+  padding:18px 25px;
+  font-size:24px;
+  font-weight:bold;
+}
+
+.container{
+  max-width:1500px;
+  margin:20px auto;
+  padding:0 15px;
+  display:grid;
+  grid-template-columns:360px 1fr;
+  gap:20px;
+}
+
+.panel{
+  background:white;
+  border-radius:12px;
+  padding:20px;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
+}
+
+h2{
+  margin-top:0;
+  font-size:21px;
+}
+
+h3{
+  margin:20px 0 10px;
+  font-size:16px;
+  color:#168f99;
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  margin-bottom:5px;
+  font-weight:bold;
+}
+
+input,select{
+  width:100%;
+  height:40px;
+  border:1px solid #cbd5d8;
+  border-radius:6px;
+  padding:7px 9px;
+  font-size:15px;
+  background:white;
+}
+
+input:focus,select:focus{
+  outline:none;
+  border-color:#19aeb8;
+}
+
+button{
+  border:0;
+  border-radius:7px;
+  padding:10px 15px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.btn{
+  background:#263238;
+  color:white;
+}
+
+.btn:hover{
+  opacity:.9;
+}
+
+.tabs{
+  display:flex;
+  gap:5px;
+  margin-bottom:15px;
+}
+
+.tab{
+  background:#e7eeee;
+  color:#263238;
+}
+
+.tab.active{
+  background:#d98a3b;
+  color:white;
+}
+
+.views{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.view{
+  background:white;
+  border-radius:12px;
+  padding:15px;
+  min-height:330px;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
+}
+
+.view h3{
+  margin-top:0;
+  color:#263238;
+}
+
+.drawing{
+  position:relative;
+  margin:auto;
+  border:2px solid #303b3f;
+  background:#fafafa;
+}
+
+/* FRONT */
+.front{
+  width:min(90%,600px);
+  aspect-ratio:1800 / 2200;
+  max-height:440px;
+}
+
+.section{
+  position:absolute;
+  top:0;
+  bottom:0;
+  border-right:1px solid #444;
+}
+
+.section:last-child{
+  border-right:0;
+}
+
+.section1{left:0;width:50%}
+.section2{left:50%;width:50%}
+
+.door{
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:50%;
+  border:1px solid #777;
+  background:#fff;
+}
+
+.door.left{left:0}
+.door.right{right:0}
+
+.handle{
+  position:absolute;
+  top:48%;
+  width:4px;
+  height:28px;
+  background:#333;
+  border-radius:3px;
+}
+
+.door.left .handle{right:8px}
+.door.right .handle{left:8px}
+
+.shelf{
+  position:absolute;
+  left:2px;
+  right:2px;
+  height:5px;
+  background:#c58a52;
+  border:1px solid #704c2c;
+}
+
+.drawer{
+  position:absolute;
+  height:8%;
+  min-height:18px;
+  background:#d39a63;
+  border:2px solid #734b29;
+  z-index:5;
+}
+
+.drawer .drawer-label{
+  position:absolute;
+  left:4px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:8px;
+  color:#fff;
+}
+
+.drawer.left{
+  left:2%;
+  width:46%;
+}
+
+.drawer.right{
+  right:2%;
+  width:46%;
+}
+
+/* SIDE */
+.side{
+  width:min(75%,300px);
+  aspect-ratio:600 / 2200;
+}
+
+.side::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:3px;
+  background:#444;
+}
+
+/* TOP */
+.top{
+  width:min(90%,600px);
+  aspect-ratio:1800 / 600;
+}
+
+/* INFO */
+.info{
+  margin-top:15px;
+  background:#f2f5f5;
+  padding:15px;
+  border-radius:8px;
+  line-height:1.7;
+  font-size:14px;
+}
+
+.price{
+  font-size:25px;
+  font-weight:bold;
+  color:#d17d31;
+  margin-top:15px;
+}
+
+.drawer-config{
+  background:#f5f8f8;
+  border-radius:8px;
+  padding:12px;
+  margin-top:10px;
+}
+
+.drawer-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:8px;
+}
+
+.checkbox{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:12px;
+}
+
+.checkbox input{
+  width:18px;
+  height:18px;
+}
+
+@media(max-width:950px){
+  .container{
+    grid-template-columns:1fr;
+  }
+
+  .views{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  BELMEGA — Configurateur de mobilier
+</header>
+
+<div class="container">
+
+<!-- =========================
+     CONFIGURATION
+========================= -->
+
+<div class="panel">
+
+<h2>Votre mobilier</h2>
+
+<label>Type de meuble</label>
+<select id="type">
+  <option>Armoire</option>
+  <option>Bibliothèque</option>
+  <option>Meuble TV</option>
+  <option>Meuble sous escalier</option>
+  <option>Cuisine</option>
+</select>
+
+<div class="grid2">
+  <div>
+    <label>Largeur (mm)</label>
+    <input id="width" type="number" value="1800" min="300">
+  </div>
+
+  <div>
+    <label>Hauteur (mm)</label>
+    <input id="height" type="number" value="2200" min="300">
+  </div>
+
+  <div>
+    <label>Profondeur (mm)</label>
+    <input id="depth" type="number" value="600" min="200">
+  </div>
+
+  <div>
+    <label>Épaisseur panneaux (mm)</label>
+    <input id="thickness" type="number" value="18" min="8">
+  </div>
+
+  <div>
+    <label>Sections</label>
+    <select id="sections">
+      <option value="1">1</option>
+      <option value="2" selected>2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Étagères / section</label>
+    <select id="shelves">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2" selected>2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </div>
+</div>
+
+<h3>Façades</h3>
+
+<label>Type de façade</label>
+<select id="facade">
+  <option value="doors">Portes battantes</option>
+  <option value="open">Ouvert</option>
+</select>
+
+<div class="grid2">
+  <div>
+    <label>Portes</label>
+    <select id="doors">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2" selected>2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Tiroirs intérieurs</label>
+    <select id="innerDrawers">
+      <option value="0" selected>0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Tiroirs extérieurs</label>
+    <select id="outerDrawers">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2" selected>2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+    </select>
+  </div>
+</div>
+
+<h3>Configuration des tiroirs</h3>
+
+<div id="drawerConfigs"></div>
+
+<h3>Socle</h3>
+
+<div class="grid2">
+  <div>
+    <label>Plinthe basse (mm)</label>
+    <input id="plinthBase" type="number" value="100" min="0">
+  </div>
+
+  <div>
+    <label>Plinthe haute (mm)</label>
+    <input id="plinthTop" type="number" value="0" min="0">
+  </div>
+
+  <div>
+    <label>Finition côté gauche (mm)</label>
+    <input id="finishLeft" type="number" value="0" min="0">
+  </div>
+
+  <div>
+    <label>Finition côté droit (mm)</label>
+    <input id="finishRight" type="number" value="0" min="0">
+  </div>
+</div>
+
+<div class="checkbox">
+  <input id="back" type="checkbox" checked>
+  <label for="back">Fond arrière</label>
+</div>
+
+<div class="checkbox">
+  <input id="handles" type="checkbox" checked>
+  <label for="handles">Poignées</label>
+</div>
+
+<div class="checkbox">
+  <input id="led" type="checkbox">
+  <label for="led">Éclairage LED</label>
+</div>
+
+<div class="price" id="price">1320 €</div>
+
+<button class="btn" onclick="resetConfig()">
+  Réinitialiser
+</button>
+
+</div>
+
+
+<!-- =========================
+     VISUALISATION
+========================= -->
+
+<div>
+
+<div class="tabs">
+  <button class="tab active" id="tab2d" onclick="show2D()">2D — Plans</button>
+  <button class="tab" id="tab3d" onclick="show3D()">3D</button>
+</div>
+
+<div id="view2d">
+
+<div class="views">
+
+<div class="view">
+<h3>Élévation avant — projection principale</h3>
+
+<div class="drawing front" id="frontDrawing"></div>
+
+</div>
+
+
+<div class="view">
+<h3>Vue de côté — profondeur</h3>
+
+<div class="drawing side" id="sideDrawing"></div>
+
+</div>
+
+
+<div class="view">
+<h3>Vue de dessus — implantation</h3>
+
+<div class="drawing top" id="topDrawing"></div>
+
+</div>
+
+
+<div class="view">
+
+<h3>Informations de fabrication</h3>
+
+<div class="info" id="info"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 3D -->
+
+<div id="view3d" style="display:none">
+
+<div class="view">
+
+<h3>Visualisation 3D</h3>
+
+<div id="threeBox"
+style="
+position:relative;
+width:80%;
+max-width:650px;
+height:450px;
+margin:40px auto;
+perspective:900px;
+">
+
+<div id="cabinet3d"
+style="
+position:absolute;
+left:20%;
+top:10%;
+width:60%;
+height:75%;
+background:#eee;
+border:3px solid #333;
+transform:rotateY(-18deg) rotateX(5deg);
+transform-style:preserve-3d;
+">
+
+<div style="
+position:absolute;
+left:50%;
+top:0;
+bottom:0;
+width:2px;
+background:#555;
+"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const ids = [
+"type","width","height","depth","thickness",
+"sections","shelves","facade","doors",
+"innerDrawers","outerDrawers",
+"plinthBase","plinthTop","finishLeft","finishRight",
+"back","handles","led"
+];
+
+const $ = id => document.getElementById(id);
+
+let drawers = [];
+
+
+/* =========================
+   INITIAL DRAWERS
+========================= */
+
+function createDrawers(){
+
+  const count = Number($("outerDrawers").value);
+
+  drawers = [];
+
+  for(let i=0;i<count;i++){
+
+    /*
+      IMPORTANT:
+      Each drawer has its own section and horizontal side.
+      Therefore 2 drawers can be placed in the SAME section:
+      one LEFT and one RIGHT.
+    */
+
+    let section = i % Number($("sections").value) + 1;
+
+    let side = i % 2 === 0 ? "left" : "right";
+
+    drawers.push({
+      id:i+1,
+      section:section,
+      side:side,
+      height:150,
+      bottom:100
+    });
+  }
+
+  renderDrawerControls();
+}
+
+
+/* =========================
+   DRAWER CONTROLS
+========================= */
+
+function renderDrawerControls(){
+
+  const box = $("drawerConfigs");
+  box.innerHTML = "";
+
+  if(drawers.length === 0){
+    box.innerHTML =
+      "<div class='info'>Aucun tiroir extérieur.</div>";
+    return;
+  }
+
+  drawers.forEach((d,index)=>{
+
+    const div=document.createElement("div");
+
+    div.className="drawer-config";
+
+    div.innerHTML=`
+
+      <strong>Tiroir ${d.id}</strong>
+
+      <div class="drawer-row">
+
+        <div>
+          <label>Section</label>
+
+          <select data-index="${index}" class="drawer-section">
+
+            ${Array.from(
+              {length:Number($("sections").value)},
+              (_,i)=>`
+                <option value="${i+1}"
+                ${d.section===i+1?"selected":""}>
+                Section ${i+1}
+                </option>
+              `
+            ).join("")}
+
+          </select>
+        </div>
+
+        <div>
+          <label>Position horizontale</label>
+
+          <select data-index="${index}" class="drawer-side">
+
+            <option value="left"
+              ${d.side==="left"?"selected":""}>
+              Gauche
+            </option>
+
+            <option value="right"
+              ${d.side==="right"?"selected":""}>
+              Droite
+            </option>
+
+          </select>
+        </div>
+
+        <div>
+          <label>Hauteur tiroir (mm)</label>
+
+          <input
+            type="number"
+            min="50"
+            value="${d.height}"
+            data-index="${index}"
+            class="drawer-height"
+          >
+        </div>
+
+        <div>
+          <label>Position depuis le bas (mm)</label>
+
+          <input
+            type="number"
+            min="0"
+            value="${d.bottom}"
+            data-index="${index}"
+            class="drawer-bottom"
+          >
+        </div>
+
+      </div>
+    `;
+
+    box.appendChild(div);
+
+  });
+
+
+  document.querySelectorAll(".drawer-section")
+    .forEach(el=>{
+      el.addEventListener("change",function(){
+        drawers[this.dataset.index].section =
+          Number(this.value);
+        update();
+      });
+    });
+
+
+  document.querySelectorAll(".drawer-side")
+    .forEach(el=>{
+      el.addEventListener("change",function(){
+        drawers[this.dataset.index].side =
+          this.value;
+        update();
+      });
+    });
+
+
+  document.querySelectorAll(".drawer-height")
+    .forEach(el=>{
+      el.addEventListener("input",function(){
+        drawers[this.dataset.index].height =
+          Number(this.value);
+        update();
+      });
+    });
+
+
+  document.querySelectorAll(".drawer-bottom")
+    .forEach(el=>{
+      el.addEventListener("input",function(){
+        drawers[this.dataset.index].bottom =
+          Number(this.value);
+        update();
+      });
+    });
+
+}
+
+
+/* =========================
+   FRONT VIEW
+========================= */
+
+function renderFront(){
+
+  const drawing=$("frontDrawing");
+
+  drawing.innerHTML="";
+
+  const sections=Number($("sections").value);
+  const height=Number($("height").value);
+  const shelves=Number($("shelves").value);
+  const doors=Number($("doors").value);
+  const plinth=Number($("plinthBase").value);
+
+  /*
+    Sections
+  */
+
+  for(let s=0;s<sections;s++){
+
+    const sec=document.createElement("div");
+
+    sec.className="section";
+
+    sec.style.left=(s*100/sections)+"%";
+    sec.style.width=(100/sections)+"%";
+
+    /*
+      shelves
+    */
+
+    for(let j=1;j<=shelves;j++){
+
+      const sh=document.createElement("div");
+
+      sh.className="shelf";
+
+      const usable=height-plinth;
+
+      sh.style.bottom=
+        (plinth + j*(usable/(shelves+1)))/height*100+"%";
+
+      sec.appendChild(sh);
+
+    }
+
+    drawing.appendChild(sec);
+
+  }
+
+
+  /*
+    Doors
+  */
+
+  if($("facade").value==="doors" && doors>0){
+
+    if(doors===1){
+
+      const d=document.createElement("div");
+
+      d.className="door left";
+      d.style.width="100%";
+
+      if($("handles").checked){
+
+        const h=document.createElement("span");
+
+        h.className="handle";
+
+        d.appendChild(h);
+
+      }
+
+      drawing.appendChild(d);
+
+    }else{
+
+      for(let i=0;i<doors;i++){
+
+        const d=document.createElement("div");
+
+        d.className="door";
+
+        d.style.width=(100/doors)+"%";
+        d.style.left=(i*100/doors)+"%";
+
+        if($("handles").checked){
+
+          const h=document.createElement("span");
+
+          h.className="handle";
+
+          if(i%2===0){
+            h.style.right="8px";
+          }else{
+            h.style.left="8px";
+          }
+
+          d.appendChild(h);
+
+        }
+
+        drawing.appendChild(d);
+
+      }
+
+    }
+
+  }
+
+
+  /*
+    Drawers
+  */
+
+  drawers.forEach(d=>{
+
+    const drawer=document.createElement("div");
+
+    drawer.className=
+      "drawer "+d.side;
+
+    const sectionWidth=100/sections;
+
+    const leftStart=
+      (d.section-1)*sectionWidth;
+
+    if(d.side==="left"){
+
+      drawer.style.left=
+        (leftStart+sectionWidth*0.02)+"%";
+
+    }else{
+
+      drawer.style.right=
+        (100-leftStart-sectionWidth+
+        sectionWidth*0.02)+"%";
+
+    }
+
+    drawer.style.width=
+      (sectionWidth*0.46)+"%";
+
+    drawer.style.bottom=
+      (d.bottom/height*100)+"%";
+
+    drawer.style.height=
+      Math.max(3,d.height/height*100)+"%";
+
+    drawer.innerHTML=
+      `<span class="drawer-label">T${d.id}</span>`;
+
+    drawing.appendChild(drawer);
+
+  });
+
+}
+
+
+/* =========================
+   SIDE VIEW
+========================= */
+
+function renderSide(){
+
+  const drawing=$("sideDrawing");
+
+  drawing.innerHTML="";
+
+  if($("back").checked){
+
+    const back=document.createElement("div");
+
+    back.style.position="absolute";
+    back.style.left="4px";
+    back.style.right="4px";
+    back.style.bottom="4px";
+    back.style.height="10px";
+    back.style.background="#ddd";
+
+    drawing.appendChild(back);
+
+  }
+
+}
+
+
+/* =========================
+   TOP VIEW
+========================= */
+
+function renderTop(){
+
+  const drawing=$("topDrawing");
+
+  drawing.innerHTML="";
+
+  const sections=Number($("sections").value);
+
+  for(let i=1;i<sections;i++){
+
+    const line=document.createElement("div");
+
+    line.style.position="absolute";
+    line.style.top="0";
+    line.style.bottom="0";
+    line.style.width="2px";
+    line.style.background="#444";
+    line.style.left=(i*100/sections)+"%";
+
+    drawing.appendChild(line);
+
+  }
+
+}
+
+
+/* =========================
+   INFORMATION
+========================= */
+
+function renderInfo(){
+
+  const w=Number($("width").value);
+  const h=Number($("height").value);
+  const d=Number($("depth").value);
+  const t=Number($("thickness").value);
+  const sections=Number($("sections").value);
+  const shelves=Number($("shelves").value);
+  const doors=Number($("doors").value);
+
+  const inner=Number($("innerDrawers").value);
+  const outer=Number($("outerDrawers").value);
+
+  let drawerText="";
+
+  if(drawers.length===0){
+
+    drawerText="Aucun tiroir extérieur";
+
+  }else{
+
+    drawerText=drawers.map(d=>
+      `T${d.id} S${d.section} ${d.side==="left"?"GAUCHE":"DROITE"} ${d.height}×${d.bottom} mm`
+    ).join("<br>");
+
+  }
+
+
+  $("info").innerHTML=`
+
+    <strong>Type :</strong> ${$("type").value}<br>
+
+    <strong>Dimensions :</strong>
+    ${w} × ${h} × ${d} mm<br>
+
+    <strong>Sections :</strong>
+    ${sections}<br>
+
+    <strong>Étagères / section :</strong>
+    ${shelves}<br>
+
+    <strong>Portes :</strong>
+    ${doors}<br>
+
+    <strong>Tiroirs :</strong>
+    ${inner+outer}
+    — intérieurs ${inner} / extérieurs ${outer}<br>
+
+    <strong>Panneaux :</strong>
+    ${t} mm<br>
+
+    <strong>Fond arrière :</strong>
+    ${$("back").checked?"Oui":"Non"}<br>
+
+    <strong>Plinthe :</strong>
+    ${$("plinthBase").value} / ${$("plinthTop").value} mm<br>
+
+    <strong>Finitions côtés :</strong>
+    ${$("finishLeft").value} / ${$("finishRight").value} mm<br>
+
+    <strong>Pieds :</strong>
+    Sans pieds<br>
+
+    <strong>Éclairage LED :</strong>
+    ${$("led").checked?"Oui":"Non"}<br>
+
+    <strong>Configuration des tiroirs :</strong><br>
+    ${drawerText}
+
+  `;
+
+}
+
+
+/* =========================
+   PRICE
+========================= */
+
+function calculatePrice(){
+
+  const w=Number($("width").value);
+  const h=Number($("height").value);
+  const d=Number($("depth").value);
+
+  let price=600;
+
+  price += (w*h)/10000;
+  price += d/2;
+
+  price += Number($("sections").value)*80;
+
+  price += Number($("shelves").value)*
+           Number($("sections").value)*35;
+
+  price += Number($("doors").value)*120;
+
+  price += Number($("innerDrawers").value)*90;
+
+  price += Number($("outerDrawers").value)*110;
+
+  if($("led").checked) price+=100;
+
+  price=Math.round(price/10)*10;
+
+  $("price").textContent=price+" €";
+
+}
+
+
+/* =========================
+   UPDATE
+========================= */
+
+function update(){
+
+  renderFront();
+  renderSide();
+  renderTop();
+  renderInfo();
+  calculatePrice();
+
+}
+
+
+/* =========================
+   EVENTS
+========================= */
+
+ids.forEach(id=>{
+
+  $(id).addEventListener("input",()=>{
+
+    if(id==="outerDrawers" ||
+       id==="sections"){
+
+      createDrawers();
+
+    }else{
+
+      update();
+
+    }
+
+  });
+
+  $(id).addEventListener("change",()=>{
+
+    if(id==="outerDrawers" ||
+       id==="sections"){
+
+      createDrawers();
+
+    }else{
+
+      update();
+
+    }
+
+  });
+
+});
+
+
+/* =========================
+   2D / 3D
+========================= */
+
+function show2D(){
+
+  $("view2d").style.display="block";
+  $("view3d").style.display="none";
+
+  $("tab2d").classList.add("active");
+  $("tab3d").classList.remove("active");
+
+}
+
+
+function show3D(){
+
+  $("view2d").style.display="none";
+  $("view3d").style.display="block";
+
+  $("tab2d").classList.remove("active");
+  $("tab3d").classList.add("active");
+
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+function resetConfig(){
+
+  $("width").value=1800;
+  $("height").value=2200;
+  $("depth").value=600;
+  $("thickness").value=18;
+
+  $("sections").value=2;
+  $("shelves").value=2;
+
+  $("doors").value=2;
+
+  $("innerDrawers").value=0;
+  $("outerDrawers").value=2;
+
+  $("plinthBase").value=100;
+  $("plinthTop").value=0;
+
+  $("finishLeft").value=0;
+  $("finishRight").value=0;
+
+  $("back").checked=true;
+  $("handles").checked=true;
+  $("led").checked=false;
+
+  createDrawers();
+  update();
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+createDrawers();
+update();
+
+</script>
+
+</body>
+</html>
