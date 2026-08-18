@@ -586,33 +586,34 @@ let drawers = [];
    INITIAL DRAWERS
 ========================= */
 
-function createDrawers(){
+ffunction createDrawers(){
 
-  const count = Number($("outerDrawers").value);
+  const sections = Number($("sections").value);
+
+  // Максимум одна шухляда на одну секцію
+  const requested = Number($("outerDrawers").value);
+  const count = Math.min(requested, sections);
 
   drawers = [];
 
-  for(let i=0;i<count;i++){
-
-    /*
-      IMPORTANT:
-      Each drawer has its own section and horizontal side.
-      Therefore 2 drawers can be placed in the SAME section:
-      one LEFT and one RIGHT.
-    */
-
-    let section = i % Number($("sections").value) + 1;
-
-    let side = i % 2 === 0 ? "left" : "right";
+  for(let i = 0; i < count; i++){
 
     drawers.push({
-      id:i+1,
-      section:section,
-      side:side,
-      height:150,
-      bottom:100
+      id: i + 1,
+
+      // Одна шухляда = одна секція
+      section: i + 1,
+
+      // Не ділити секцію на ліву/праву частину
+      side: "full",
+
+      height: 150,
+      bottom: 100
     });
   }
+
+  // Синхронізуємо кількість шухляд з кількістю секцій
+  $("outerDrawers").value = count;
 
   renderDrawerControls();
 }
